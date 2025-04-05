@@ -1,0 +1,23 @@
+{
+  "name": "xsuperr/promise",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "xSuperr",
+      "email": "imrllysuper@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "xSuperr\\Promise\\": "xSuperr/Promise/"
+    }
+  },
+  "extra":{
+    "virion": {
+      "spec": "3.0",
+      "namespace-root": "xSuperr\\Promise"
+    }
+  }
+}
