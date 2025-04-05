@@ -1,6 +1,6 @@
 <?php
 
-namespace xSuperr\OreDB\promise;
+namespace xSuperr\Promise;
 
 class PromiseManager {
     private array $promises = [];
