@@ -26,11 +26,19 @@ class PromiseManager {
         }
     }
 
+    public function reject(int $id): void
+    {
+        if (isset($this->promises[$id])) {
+            $this->promises[$id]->rreject();
+            unset($this->promises[$id], $this->timeouts[$id]);
+        }
+    }
+
     public function checkTimeouts(): void {
         $now = microtime(true);
         foreach ($this->timeouts as $id => $expireTime) {
             if ($now > $expireTime && isset($this->promises[$id])) {
-                $this->promises[$id]->resolve(null);
+                $this->promises[$id]->reject();
                 unset($this->promises[$id], $this->timeouts[$id]);
             }
         }
