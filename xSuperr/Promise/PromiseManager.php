@@ -29,7 +29,7 @@ class PromiseManager {
     public function reject(int $id): void
     {
         if (isset($this->promises[$id])) {
-            $this->promises[$id]->rreject();
+            $this->promises[$id]->reject();
             unset($this->promises[$id], $this->timeouts[$id]);
         }
     }
