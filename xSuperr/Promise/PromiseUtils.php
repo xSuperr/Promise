@@ -16,39 +16,44 @@ class PromiseUtils
      *
      * @phpstan-return BetterPromise<array<TKey, TPromiseValue>>
      */
-    public static function promiseAll(array $promises) : BetterPromise {
-        /** @phpstan-var BetterPromiseResolver<array<TKey, TPromiseValue>> $resolver */
+    public static function promiseAll(array $promises): BetterPromise
+    {
         $resolver = new BetterPromiseResolver();
         $values = [];
         $toResolve = count($promises);
         $continue = true;
 
-        foreach($promises as $key => $promise){
+        foreach ($promises as $key => $promise) {
             $promise->then(
-                function(mixed $value) use ($resolver, $key, &$toResolve, &$continue, &$values) : void{
-                    $values[$key] = $value;
+                function ($value) use ($resolver, $key, &$toResolve, &$values, &$continue): void {
+                    if (!$continue) {
+                        return;
+                    }
 
-                    if(--$toResolve === 0 && $continue){
+                    $values[$key] = $value;
+                    if (--$toResolve === 0) {
+                        $continue = false;
                         $resolver->resolve($values);
                     }
                 }
             );
 
             $promise->fail(
-                function() use ($resolver, &$continue) : void{
-                    if($continue){
-                        $continue = false;
-                        $resolver->reject();
+                function () use ($resolver, &$continue): void {
+                    if (!$continue) {
+                        return;
                     }
+                    $continue = false;
+                    $resolver->reject();
                 }
             );
 
-            if(!$continue){
+            if (!$continue) {
                 break;
             }
         }
 
-        if($toResolve === 0){
+        if ($toResolve === 0 && $continue) {
             $continue = false;
             $resolver->resolve($values);
         }
