@@ -32,7 +32,7 @@ final class BetterPromise{
     {
         $state = $this->shared->state;
         if($state === false){
-            $fail();
+            $fail($this->shared->result);
         }else{
             $this->shared->onFailure[spl_object_id($fail)] = $fail;
         }

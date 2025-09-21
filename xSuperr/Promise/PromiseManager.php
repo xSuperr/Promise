@@ -26,10 +26,10 @@ class PromiseManager {
         }
     }
 
-    public function reject(int $id): void
+    public function reject(int $id, mixed $err): void
     {
         if (isset($this->promises[$id])) {
-            $this->promises[$id]->reject();
+            $this->promises[$id]->reject($err);
             unset($this->promises[$id], $this->timeouts[$id]);
         }
     }

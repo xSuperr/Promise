@@ -39,12 +39,12 @@ class PromiseUtils
             );
 
             $promise->fail(
-                function () use ($resolver, &$continue): void {
+                function ($err) use ($resolver, &$continue): void {
                     if (!$continue) {
                         return;
                     }
                     $continue = false;
-                    $resolver->reject();
+                    $resolver->reject($err);
                 }
             );
 

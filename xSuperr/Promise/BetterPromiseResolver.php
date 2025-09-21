@@ -35,13 +35,14 @@ final class BetterPromiseResolver{
         $this->shared->onFailure = [];
     }
 
-    public function reject() : void{
+    public function reject(mixed $err) : void{
         if($this->shared->state !== null){
             throw new \LogicException("Promise has already been resolved/rejected");
         }
         $this->shared->state = false;
+        $this->shared->result = $err;
         foreach($this->shared->onFailure as $c){
-            $c();
+            $c($err);
         }
         $this->shared->onSuccess = [];
         $this->shared->onFailure = [];
