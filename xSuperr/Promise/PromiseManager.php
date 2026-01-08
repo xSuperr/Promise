@@ -38,7 +38,7 @@ class PromiseManager {
         $now = microtime(true);
         foreach ($this->timeouts as $id => $expireTime) {
             if ($now > $expireTime && isset($this->promises[$id])) {
-                $this->promises[$id]->reject();
+                $this->promises[$id]->reject(new \Exception("timeout"));
                 unset($this->promises[$id], $this->timeouts[$id]);
             }
         }
